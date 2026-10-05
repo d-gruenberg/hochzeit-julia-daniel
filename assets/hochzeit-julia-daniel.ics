@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Julia und Daniel//Hochzeit//DE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:20270501-julia-daniel@dnarajek.github.io
+DTSTAMP:20261005T000000Z
+DTSTART:20270501T120000Z
+DTEND:20270502T000000Z
+SUMMARY:Hochzeit von Julia und Daniel
+LOCATION:Gut Sonnenhausen\, Sonnenhausen 2\, 85625 Glonn
+DESCRIPTION:Ankommen ab 14:00 Uhr\nFreie Trauung ab 14:30 Uhr
+URL:https://dnarajek.github.io/hochzeit-julia-daniel/
+END:VEVENT
+END:VCALENDAR
