@@ -14,7 +14,7 @@ Statische One-Page-Hochzeitswebsite für GitHub Pages, Netlify oder jeden andere
 
 ## Veröffentlichung
 
-Live: https://dnarajek.github.io/hochzeit-julia-daniel/
+Live: https://d-gruenberg.github.io/hochzeit-julia-daniel/
 
 GitHub Pages liefert den Hauptordner von `main` aus. HTML, CSS, JavaScript und benötigte Dateien aus `assets/` gemeinsam aktualisieren. `tools/`, `.qa/`, `sources/` und das Aquarell gehören nicht zum öffentlichen Website-Paket.
 
