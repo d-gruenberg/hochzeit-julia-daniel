@@ -57,11 +57,15 @@ reducedMotion.addEventListener('change', queueMeadow);
 updateMeadow();
 
 const countdown = document.querySelector('#countdown');
+const deadlineCurrent = document.querySelector('#rsvpDeadlineCurrent');
+const deadlinePast = document.querySelector('#rsvpDeadlinePast');
 function updateCountdown() {
   const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
   const days = Math.round((Date.parse('2027-05-01T00:00:00Z') - Date.parse(`${today}T00:00:00Z`)) / 86400000);
   countdown.hidden = days < 0;
   if (days >= 0) countdown.textContent = days === 0 ? 'Heute feiern wir!' : `Noch ${days} ${days === 1 ? 'Tag' : 'Tage'} bis zu unserer Hochzeit`;
+  deadlineCurrent.hidden = today > '2027-01-31';
+  deadlinePast.hidden = !deadlineCurrent.hidden;
 }
 updateCountdown();
 setInterval(updateCountdown, 60000);

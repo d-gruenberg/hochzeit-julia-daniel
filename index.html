@@ -6,12 +6,26 @@
     <title>Julia & Daniel | Hochzeit am 1. Mai 2027</title>
     <meta
       name="description"
-      content="Alle Informationen zur Hochzeit von Julia und Daniel am 1. Mai 2027 auf Gut Sonnenhausen."
+      content="Wir feiern am 1. Mai 2027 auf Gut Sonnenhausen. Alle Infos zu unserem Tag und zur Rückmeldung."
     />
     <meta name="theme-color" content="#f7f2e9" />
+    <link rel="canonical" href="https://d-gruenberg.github.io/hochzeit-julia-daniel/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:title" content="Julia &amp; Daniel heiraten | 1. Mai 2027" />
+    <meta property="og:description" content="Wir feiern auf Gut Sonnenhausen. Alle Infos zu unserem Tag und zur Rückmeldung." />
+    <meta property="og:url" content="https://d-gruenberg.github.io/hochzeit-julia-daniel/" />
+    <meta property="og:image" content="https://d-gruenberg.github.io/hochzeit-julia-daniel/assets/teilen-julia-daniel.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Julia und Daniel küssen sich nach der Trauung." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
     <link rel="preload" href="assets/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="styles.css?v=4" />
-    <script src="script.js?v=4" defer></script>
+    <script src="script.js?v=5" defer></script>
   </head>
   <body>
     <header class="site-header" aria-label="Seitennavigation">
@@ -234,7 +248,10 @@
           <div>
             <p class="eyebrow">Seid ihr dabei?</p>
             <h2>Rückmeldung</h2>
-            <p class="rsvp-deadline">Bitte bis zum <time datetime="2027-01-31">31. Januar 2027</time></p>
+            <p class="rsvp-deadline">
+              <span id="rsvpDeadlineCurrent">Bitte bis zum <time datetime="2027-01-31">31. Januar 2027</time></span>
+              <span id="rsvpDeadlinePast" hidden>Die Rückmeldefrist ist vorbei. Bitte meldet euch direkt bei uns.</span>
+            </p>
             <p>
               Wir freuen uns auf eure Antwort – direkt per WhatsApp an uns.
             </p>
