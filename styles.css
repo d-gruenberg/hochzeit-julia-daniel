@@ -59,6 +59,9 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; }
 .timeline li:first-child { border-left: 0; }
 .timeline time { display: block; margin-bottom: 1rem; color: var(--green-dark); font-weight: 600; }
 .timeline span { display: block; font: 1.75rem/1.2 var(--serif); }
+.day-extras { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem 2rem; margin-top: 1.5rem; }
+.countdown { margin: 0; color: var(--green-dark); font-size: .9375rem; font-weight: 600; }
+.calendar-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--green-dark); font-size: .9375rem; font-weight: 600; }
 .image-break { width: min(100%, 960px); aspect-ratio: 4 / 3; margin: 3rem auto; overflow: hidden; background: #bfd5db; }
 .image-break picture, .image-break img { height: 100%; }
 .image-break img { object-fit: cover; object-position: center calc(80% + var(--image-shift, 0px)); }
@@ -106,6 +109,7 @@ input[type='radio'] { width: 20px; height: 20px; margin: 0; accent-color: var(--
 .form-status:empty { display: none; }
 .footer { padding: 2rem 1rem; color: var(--muted); text-align: center; border-top: 1px solid var(--line); font-size: .875rem; }
 .footer p { margin: 0; }
+.footer a { display: inline-flex; align-items: center; min-height: 44px; margin-top: .75rem; color: var(--green-dark); font-weight: 600; }
 @media (min-width: 1200px) { .site-header { padding-inline: 3rem; } }
 @media (max-width: 900px) {
   .intro__grid, .split, .rsvp__grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; }

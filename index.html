@@ -10,8 +10,8 @@
     />
     <meta name="theme-color" content="#f7f2e9" />
     <link rel="preload" href="assets/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="styles.css?v=3" />
-    <script src="script.js?v=2" defer></script>
+    <link rel="stylesheet" href="styles.css?v=4" />
+    <script src="script.js?v=4" defer></script>
   </head>
   <body>
     <header class="site-header" aria-label="Seitennavigation">
@@ -99,6 +99,10 @@
               <span>Ende der Feier</span>
             </li>
           </ol>
+          <div class="day-extras">
+            <p class="countdown" id="countdown" hidden></p>
+            <a class="calendar-link" href="assets/hochzeit-julia-daniel.ics" download="Hochzeit-Julia-Daniel.ics">Zum Kalender hinzufügen</a>
+          </div>
         </div>
       </section>
 
@@ -252,8 +256,8 @@
                 </select>
               </label>
               <fieldset id="roomDetails" hidden disabled>
-                <label>Anzahl Zimmer <input type="number" name="roomCount" min="1" step="1" inputmode="numeric" /></label>
-                <label>Belegung / weitere Zimmerwünsche <textarea name="occupancy" rows="2" placeholder="Wer übernachtet in welchem Zimmer?"></textarea></label>
+                <label>Anzahl Zimmer <input type="number" name="roomCount" min="1" step="1" inputmode="numeric" required /></label>
+                <label>Belegung / weitere Zimmerwünsche (z. B. Zustellbett) <textarea name="occupancy" rows="2" placeholder="Wer übernachtet in welchem Zimmer?"></textarea></label>
               </fieldset>
             </fieldset>
             <div class="form-actions">
@@ -270,6 +274,7 @@
 
     <footer class="footer">
       <p>Julia & Daniel · 1. Mai 2027 · Gut Sonnenhausen</p>
+      <a href="#top">Nach oben</a>
     </footer>
 
     <template id="personTemplate">

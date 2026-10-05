@@ -9,6 +9,7 @@ Statische One-Page-Hochzeitswebsite für GitHub Pages, Netlify oder jeden andere
 - `script.js` - WhatsApp-Rückmeldung
 - `assets/hero-kuss.jpg` - Hero-Bild
 - `assets/wiese.jpg` - visuelle Zäsur weiter unten
+- `assets/hochzeit-julia-daniel.ics` - Kalendereintrag zum Herunterladen
 - `assets/aquarell-referenz.jpeg` - nur als lokale Referenz abgelegt, nicht sichtbar eingebunden
 
 ## Veröffentlichung

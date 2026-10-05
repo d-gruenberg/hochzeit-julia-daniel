@@ -56,6 +56,16 @@ addEventListener('resize', queueMeadow);
 reducedMotion.addEventListener('change', queueMeadow);
 updateMeadow();
 
+const countdown = document.querySelector('#countdown');
+function updateCountdown() {
+  const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  const days = Math.round((Date.parse('2027-05-01T00:00:00Z') - Date.parse(`${today}T00:00:00Z`)) / 86400000);
+  countdown.hidden = days < 0;
+  if (days >= 0) countdown.textContent = days === 0 ? 'Heute feiern wir!' : `Noch ${days} ${days === 1 ? 'Tag' : 'Tage'} bis zu unserer Hochzeit`;
+}
+updateCountdown();
+setInterval(updateCountdown, 60000);
+
 const form = document.querySelector('#rsvpForm');
 const people = document.querySelector('#people');
 const template = document.querySelector('#personTemplate');
@@ -125,7 +135,7 @@ function buildMessage() {
   if (attending) {
     lines.push(`Zimmerwunsch: ${room.value}`);
     if (room.value !== 'Kein Zimmer benötigt') {
-      lines.push(`Anzahl Zimmer: ${form.elements.roomCount.value || 'noch offen'}`);
+      lines.push(`Anzahl Zimmer: ${form.elements.roomCount.value}`);
       lines.push(`Belegung / weitere Zimmerwünsche: ${form.elements.occupancy.value.trim() || 'noch offen'}`);
     }
     lines.push('', 'Wir freuen uns auf euch!');
