@@ -10,12 +10,12 @@
     />
     <meta name="theme-color" content="#f7f2e9" />
     <link rel="preload" href="assets/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="styles.css?v=2" />
+    <link rel="stylesheet" href="styles.css?v=3" />
     <script src="script.js?v=2" defer></script>
   </head>
   <body>
     <header class="site-header" aria-label="Seitennavigation">
-      <a class="brand" href="#top" aria-label="Julia und Daniel – zum Anfang">J&amp;D</a>
+      <a class="brand" href="#top" aria-label="Julia und Daniel – zum Anfang"><span>J&amp;D</span></a>
       <button class="menu-toggle icon-button" type="button" aria-label="Menü öffnen" aria-controls="navigation" aria-expanded="false" hidden>
         <span class="icon menu-open-icon" aria-hidden="true"></span>
         <span class="icon menu-close-icon" aria-hidden="true"></span>
@@ -121,10 +121,12 @@
           </div>
           <div class="content-stack">
             <p>
-              Wer nach der Feier direkt vor Ort übernachten möchte, kann bei
-              der Rückmeldung ein Zimmer anfragen. Für unsere Gäste steht ein
-              begrenztes Zimmerkontingent zur Verfügung.
+              Wer nach der Feier gemeinsam mit uns direkt vor Ort übernachten
+              möchte, kann bei der Rückmeldung ein Zimmer anfragen. Am nächsten
+              Morgen lassen wir die Feier bei einem gemeinsamen Frühstück
+              gemütlich ausklingen.
             </p>
+            <p>Für unsere Gäste steht ein begrenztes Zimmerkontingent zur Verfügung.</p>
             <div class="room-grid" aria-label="Zimmerpreise">
               <article>
                 <span>Einzelzimmer</span>
@@ -143,7 +145,6 @@
               und melden uns bei euch. Die Bezahlung erfolgt direkt an Gut Sonnenhausen.
             </p>
             <p class="note">Check-in ist ab 13:00 Uhr möglich.</p>
-            <p>Am nächsten Morgen lassen wir die Feier bei einem gemeinsamen Frühstück gemütlich ausklingen.</p>
           </div>
         </div>
       </section>
@@ -161,7 +162,7 @@
             </article>
             <article class="photo-note">
               <h3>Fotos von Kindern</h3>
-              <p>Bitte ladet keine Fotos oder Videos von Kindern ins Internet hoch und leitet sie auch nicht weiter – weder in sozialen Netzwerken noch in Messenger-Gruppen. Danke, dass ihr ihre Privatsphäre respektiert.</p>
+              <p>Bitte veröffentlicht keine Fotos oder Videos im Internet, auf denen die Gesichter von Kindern erkennbar sind. Danke, dass ihr ihre Privatsphäre respektiert.</p>
             </article>
             <article>
               <h3>Kinder</h3>
@@ -170,7 +171,8 @@
                 sind, wissen wir nur zu gut, dass das mit Kind nicht immer
                 möglich ist. Wenn es für euch machbar ist, würden wir uns
                 deshalb freuen, wenn ihr eure Kleinen an diesem Tag liebevoll
-                anderweitig betreuen lasst.
+                anderweitig betreuen lasst. Und wenn das nicht möglich ist,
+                sind eure Kinder natürlich herzlich willkommen.
               </p>
             </article>
             <article>
@@ -204,7 +206,7 @@
             </article>
           </div>
             <div class="witness-block">
-              <h3>Unsere Trauzeugen</h3>
+              <h3>Unsere Trauzeuginnen und unser Trauzeuge</h3>
               <ul class="witnesses">
                 <li>
                   <span>Vanessa Hufnagel</span>
@@ -236,6 +238,7 @@
           </div>
           <form class="rsvp-form" id="rsvpForm" hidden>
             <p class="name-hint" id="nameHint">Bitte gebt für jede Person den vollständigen Vor- und Nachnamen an, damit wir eure Rückmeldung eindeutig zuordnen können.</p>
+            <p class="name-hint">Falls eure Kinder mitkommen, stimmt das bitte direkt mit uns ab. Alles Weitere zum Essen klären wir persönlich.</p>
             <div id="people"></div>
             <button class="button button--secondary" type="button" id="addPerson"><span class="icon plus-icon" aria-hidden="true"></span> Weitere Person</button>
             <fieldset id="roomFields" hidden disabled>
@@ -246,7 +249,6 @@
                   <option value="Kein Zimmer benötigt">Kein Zimmer benötigt</option>
                   <option value="Einzelzimmer">Einzelzimmer</option>
                   <option value="Doppelzimmer">Doppelzimmer</option>
-                  <option value="Wir sind uns noch unsicher">Wir sind uns noch unsicher</option>
                 </select>
               </label>
               <fieldset id="roomDetails" hidden disabled>
