@@ -9,18 +9,18 @@
       content="Alle Informationen zur Hochzeit von Julia und Daniel am 1. Mai 2027 auf Gut Sonnenhausen."
     />
     <meta name="theme-color" content="#f7f2e9" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="preload" href="assets/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="styles.css?v=2" />
+    <script src="script.js?v=2" defer></script>
   </head>
   <body>
     <header class="site-header" aria-label="Seitennavigation">
-      <a class="brand" href="#top" aria-label="Zum Anfang">J & D</a>
-      <nav class="nav" aria-label="Hauptnavigation">
+      <a class="brand" href="#top" aria-label="Julia und Daniel – zum Anfang">J&amp;D</a>
+      <button class="menu-toggle icon-button" type="button" aria-label="Menü öffnen" aria-controls="navigation" aria-expanded="false" hidden>
+        <span class="icon menu-open-icon" aria-hidden="true"></span>
+        <span class="icon menu-close-icon" aria-hidden="true"></span>
+      </button>
+      <nav class="nav" id="navigation" aria-label="Hauptnavigation">
         <a href="#tag">Der Tag</a>
         <a href="#uebernachten">Übernachten</a>
         <a href="#wissen">Gut zu wissen</a>
@@ -30,11 +30,15 @@
 
     <main id="top">
       <section class="hero" aria-label="Julia und Daniel">
+        <picture>
+          <source type="image/webp" srcset="assets/hero-960.webp 960w, assets/hero-1920.webp 1920w" sizes="100vw" />
         <img
           class="hero__image"
           src="assets/hero-kuss.jpg"
           alt="Julia und Daniel küssen sich nach der Trauung."
+          fetchpriority="high"
         />
+        </picture>
         <div class="hero__overlay"></div>
         <div class="hero__content">
           <p class="eyebrow">Wir heiraten</p>
@@ -99,11 +103,14 @@
       </section>
 
       <section class="image-break" aria-label="Julia und Daniel auf der Wiese">
+        <picture>
+          <source type="image/webp" srcset="assets/wiese-640.webp 640w, assets/wiese-1280.webp 1280w" sizes="100vw" />
         <img
           src="assets/wiese.jpg"
           alt="Julia und Daniel stehen auf einer sonnigen Wiese."
           loading="lazy"
         />
+        </picture>
       </section>
 
       <section id="uebernachten" class="section">
@@ -115,26 +122,28 @@
           <div class="content-stack">
             <p>
               Wer nach der Feier direkt vor Ort übernachten möchte, kann bei
-              der Rückmeldung ein Zimmer anfragen.
+              der Rückmeldung ein Zimmer anfragen. Für unsere Gäste steht ein
+              begrenztes Zimmerkontingent zur Verfügung.
             </p>
             <div class="room-grid" aria-label="Zimmerpreise">
               <article>
                 <span>Einzelzimmer</span>
                 <strong>bis 151 €</strong>
-                <small>pro Nacht, inkl. Frühstück</small>
+                <small>pro Zimmer und Nacht, inkl. Frühstück</small>
               </article>
               <article>
                 <span>Doppelzimmer</span>
                 <strong>bis 186 €</strong>
-                <small>pro Nacht, inkl. Frühstück</small>
+                <small>pro Zimmer und Nacht, inkl. Frühstück</small>
               </article>
             </div>
             <p>
               Bitte gebt uns bei eurer Rückmeldung Bescheid, ob ihr ein Einzel-
               oder Doppelzimmer benötigt. Die Zimmer teilen wir anschließend zu
-              und melden uns bei euch.
+              und melden uns bei euch. Die Bezahlung erfolgt direkt an Gut Sonnenhausen.
             </p>
             <p class="note">Check-in ist ab 13:00 Uhr möglich.</p>
+            <p>Am nächsten Morgen lassen wir die Feier bei einem gemeinsamen Frühstück gemütlich ausklingen.</p>
           </div>
         </div>
       </section>
@@ -146,6 +155,14 @@
             <h2>Alles, was für die Planung hilft.</h2>
           </div>
           <div class="info-grid">
+            <article class="photo-note">
+              <h3>Während der Trauung</h3>
+              <p>Bitte lasst während unserer freien Trauung Handys und Kameras beiseite und macht keine Fotos oder Videos. Wir freuen uns, wenn ihr diesen Moment ganz mit uns erlebt.</p>
+            </article>
+            <article class="photo-note">
+              <h3>Fotos von Kindern</h3>
+              <p>Bitte ladet keine Fotos oder Videos von Kindern ins Internet hoch und leitet sie auch nicht weiter – weder in sozialen Netzwerken noch in Messenger-Gruppen. Danke, dass ihr ihre Privatsphäre respektiert.</p>
+            </article>
             <article>
               <h3>Kinder</h3>
               <p>
@@ -159,9 +176,7 @@
             <article>
               <h3>Hunde</h3>
               <p>
-                Eure Hunde bitten wir, für diesen Tag in liebevolle Hände zu
-                geben, damit wir die Hochzeit ohne tierische Begleitung feiern
-                können.
+                Wir bitten euch, eure Hunde für diesen Tag in liebevolle Hände zu geben, damit wir die Hochzeit ohne tierische Begleitung feiern können.
               </p>
             </article>
             <article>
@@ -187,8 +202,9 @@
                 und Plänen.
               </p>
             </article>
-            <article>
-              <h3>Trauzeugen</h3>
+          </div>
+            <div class="witness-block">
+              <h3>Unsere Trauzeugen</h3>
               <ul class="witnesses">
                 <li>
                   <span>Vanessa Hufnagel</span>
@@ -203,58 +219,49 @@
                   <a href="https://wa.me/4915146538129">+49 151 4653 8129</a>
                 </li>
               </ul>
-            </article>
-          </div>
+            </div>
         </div>
       </section>
 
       <section id="rueckmeldung" class="section rsvp">
         <div class="section__inner rsvp__grid">
           <div>
-            <p class="eyebrow">Rückmeldung</p>
-            <h2>Bitte gebt uns bis zum 31. Januar 2027 Bescheid.</h2>
+            <p class="eyebrow">Seid ihr dabei?</p>
+            <h2>Rückmeldung</h2>
+            <p class="rsvp-deadline">Bitte bis zum <time datetime="2027-01-31">31. Januar 2027</time></p>
             <p>
-              Die Rückmeldung läuft direkt per WhatsApp an Julia & Daniel. Die
-              Nachricht ist vorbereitet und kann vor dem Absenden einfach ergänzt
-              werden.
+              Wir freuen uns auf eure Antwort – direkt per WhatsApp an uns.
             </p>
+            <a class="direct-contact" href="https://wa.me/4917663465301">Julia &amp; Daniel · +49 176 63465301</a>
           </div>
-          <form class="rsvp-form" id="rsvpForm">
-            <label>
-              Wer kommt?
-              <textarea
-                name="guests"
-                rows="3"
-                placeholder="z. B. Julia Beispiel, Daniel Beispiel"
-              ></textarea>
-            </label>
-            <label>
-              Essen je Person
-              <textarea
-                name="food"
-                rows="3"
-                placeholder="z. B. Julia vegetarisch, Daniel Fleisch"
-              ></textarea>
-            </label>
-            <label>
-              Allergien oder Unverträglichkeiten
-              <textarea
-                name="allergies"
-                rows="2"
-                placeholder="Falls keine: keine"
-              ></textarea>
-            </label>
-            <label>
-              Zimmerwunsch
-              <select name="room">
-                <option value="Kein Zimmer benötigt">Kein Zimmer benötigt</option>
-                <option value="Einzelzimmer">Einzelzimmer</option>
-                <option value="Doppelzimmer">Doppelzimmer</option>
-                <option value="Wir sind uns noch unsicher">Wir sind uns noch unsicher</option>
-              </select>
-            </label>
-            <button class="button" type="submit">WhatsApp-Nachricht öffnen</button>
+          <form class="rsvp-form" id="rsvpForm" hidden>
+            <p class="name-hint" id="nameHint">Bitte gebt für jede Person den vollständigen Vor- und Nachnamen an, damit wir eure Rückmeldung eindeutig zuordnen können.</p>
+            <div id="people"></div>
+            <button class="button button--secondary" type="button" id="addPerson"><span class="icon plus-icon" aria-hidden="true"></span> Weitere Person</button>
+            <fieldset id="roomFields" hidden disabled>
+              <legend>Übernachten</legend>
+              <label>Zimmerwunsch
+                <select name="room" id="room" required>
+                  <option value="">Bitte auswählen</option>
+                  <option value="Kein Zimmer benötigt">Kein Zimmer benötigt</option>
+                  <option value="Einzelzimmer">Einzelzimmer</option>
+                  <option value="Doppelzimmer">Doppelzimmer</option>
+                  <option value="Wir sind uns noch unsicher">Wir sind uns noch unsicher</option>
+                </select>
+              </label>
+              <fieldset id="roomDetails" hidden disabled>
+                <label>Anzahl Zimmer <input type="number" name="roomCount" min="1" step="1" inputmode="numeric" /></label>
+                <label>Belegung / weitere Zimmerwünsche <textarea name="occupancy" rows="2" placeholder="Wer übernachtet in welchem Zimmer?"></textarea></label>
+              </fieldset>
+            </fieldset>
+            <div class="form-actions">
+              <button class="button" type="submit">WhatsApp-Nachricht öffnen</button>
+              <button class="button button--secondary" type="button" id="copyMessage"><span class="icon copy-icon" aria-hidden="true"></span> Nachricht kopieren</button>
+            </div>
+            <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
+            <div id="messageFallback" hidden><label>Deine Nachricht<textarea id="messagePreview" rows="10" readonly></textarea></label></div>
           </form>
+          <noscript><p>Bitte sendet uns eure Zu- oder Absage mit Namen, Essen je Person, Allergien und Zimmerwunsch direkt per <a href="https://wa.me/4917663465301">WhatsApp</a>.</p></noscript>
         </div>
       </section>
     </main>
@@ -263,6 +270,20 @@
       <p>Julia & Daniel · 1. Mai 2027 · Gut Sonnenhausen</p>
     </footer>
 
-    <script src="script.js"></script>
+    <template id="personTemplate">
+      <fieldset class="person">
+        <legend class="person-legend">Person</legend>
+        <div class="person-heading"><span class="person-title" aria-hidden="true">Person</span><button type="button" class="remove-person" aria-label="Person entfernen"><span class="icon close-icon" aria-hidden="true"></span> Entfernen</button></div>
+        <label>Vor- und Nachname<input class="person-name" type="text" required autocomplete="off" aria-describedby="nameHint" maxlength="120" /></label>
+        <fieldset class="attendance"><legend>Bist du dabei?</legend>
+          <label><input type="radio" value="yes" required /> Ich komme</label>
+          <label><input type="radio" value="no" required /> Leider nicht</label>
+        </fieldset>
+        <fieldset class="meal-fields" hidden disabled>
+          <label>Essen<select class="person-food" required><option value="">Bitte auswählen</option><option>Fleisch</option><option>Vegetarisch</option><option>Vegan</option></select></label>
+          <label>Allergien / Unverträglichkeiten <span class="optional">optional</span><textarea class="person-allergies" rows="2" placeholder="z. B. Nüsse, Laktose oder keine" maxlength="1500"></textarea></label>
+        </fieldset>
+      </fieldset>
+    </template>
   </body>
 </html>
