@@ -35,3 +35,8 @@ Die Seite verwendet keine Cookies, kein Tracking, keine Datenbank und keine Spei
 ## Lokale Prüfung
 
 `node tools/serve.cjs` stellt eine Vorschau unter http://127.0.0.1:4175/ bereit. Der automatisierte Browser-Test in `tools/check.cjs` benötigt Playwright und einen startbaren Edge-Browser. Die Hilfsseiten in `tools/` dienen ausschließlich lokalen Tests.
+
+
+## Wenn eine Veröffentlichung hängen bleibt
+
+Unter **Actions** den neuesten Lauf „pages build and deployment“ prüfen. Steht er auf **Failed**, oben rechts **Re-run jobs** > **Re-run failed jobs** wählen. Bei **Queued** zunächst den [GitHub-Status](https://www.githubstatus.com/) prüfen und keinen zweiten Neustart desselben Laufs versuchen. Nach einer GitHub-Störung kann ein neuer Commit einen frischen Veröffentlichungsversuch auslösen; anschließend die Live-Seite kontrollieren.
