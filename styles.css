@@ -108,9 +108,10 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; }
 .info-grid p { margin: 0; color: var(--muted); }
 .photo-note h3 { color: var(--green-dark); }
 .witness-block { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); }
-.witnesses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
-.witnesses li { display: grid; align-content: start; }
+.witnesses { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+.witnesses li { display: grid; align-content: start; min-width: 0; overflow-wrap: anywhere; }
 .witnesses span { font-weight: 600; }
+.witnesses small { color: var(--muted); font-size: .875rem; }
 .witnesses a { display: flex; align-items: center; min-height: 44px; font-size: .9375rem; color: var(--green-dark); }
 .rsvp { background: #e7eff2; }
 .rsvp-deadline { margin: 1.25rem 0; color: var(--ink); }
