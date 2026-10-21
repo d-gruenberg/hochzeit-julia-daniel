@@ -4,7 +4,33 @@ const header = document.querySelector('.site-header');
 const menuButton = document.querySelector('.menu-toggle');
 const nav = document.querySelector('#navigation');
 const mobile = matchMedia('(max-width: 767px)');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 menuButton.hidden = false;
+
+if (document.documentElement.classList.contains('intro-pending')) {
+  const finishIntro = window.weddingIntro.finish;
+  const intro = document.querySelector('.invitation-intro');
+  document.querySelectorAll('.site-header, main, .footer').forEach(element => {
+    element.inert = true;
+    element.setAttribute('data-intro-inert', '');
+  });
+  const skip = intro.querySelector('.intro-skip');
+  skip.addEventListener('click', finishIntro);
+  skip.focus({ preventScroll: true });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') finishIntro();
+  });
+  addEventListener('hashchange', finishIntro);
+  reducedMotion.addEventListener('change', event => { if (event.matches) finishIntro(); });
+  Promise.all([
+    intro.querySelector('img').decode(),
+    document.fonts.load('42px Allura'),
+  ]).then(() => {
+    if (!document.documentElement.classList.contains('intro-pending')) return;
+    document.documentElement.classList.add('intro-opening');
+    setTimeout(finishIntro, 1200);
+  }).catch(finishIntro);
+}
 
 function setMenu(open, restoreFocus = false) {
   header.classList.toggle('menu-is-open', open);
@@ -40,14 +66,13 @@ new ResizeObserver(() => {
 updateHeader();
 
 const meadow = document.querySelector('.image-break');
-const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let imageFrame = 0;
 function updateMeadow() {
   imageFrame = 0;
   const box = meadow.getBoundingClientRect();
   const enabled = !mobile.matches && !reducedMotion.matches;
   const progress = (innerHeight / 2 - box.top - box.height / 2) / ((innerHeight + box.height) / 2);
-  const shift = enabled ? Math.max(-32, Math.min(32, progress * 32)) : 0;
+  const shift = enabled ? Math.max(-16, Math.min(16, progress * 16)) : 0;
   meadow.style.setProperty('--image-shift', `${shift}px`);
 }
 function queueMeadow() { if (!imageFrame) imageFrame = requestAnimationFrame(updateMeadow); }
@@ -55,6 +80,83 @@ addEventListener('scroll', queueMeadow, { passive: true });
 addEventListener('resize', queueMeadow);
 reducedMotion.addEventListener('change', queueMeadow);
 updateMeadow();
+
+const revealTargets = [...document.querySelectorAll('.section__heading, .intro h2, .image-break picture, .timeline li')];
+let revealObserver;
+function revealAll() {
+  revealObserver?.disconnect();
+  revealTargets.forEach(element => element.classList.remove('reveal-pending', 'reveal-ready'));
+}
+if (!reducedMotion.matches && 'IntersectionObserver' in window) {
+  revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.remove('reveal-pending');
+      revealObserver.unobserve(entry.target);
+    });
+  }, { threshold: .12, rootMargin: '0px 0px -24px 0px' });
+  revealTargets.forEach(element => {
+    const box = element.getBoundingClientRect();
+    if (box.top < innerHeight && box.bottom > 0) return;
+    if (element.matches('.timeline li')) {
+      element.style.setProperty('--reveal-delay', `${[...element.parentElement.children].indexOf(element) * 70}ms`);
+    }
+    element.classList.add('reveal-ready', 'reveal-pending');
+    revealObserver.observe(element);
+  });
+}
+reducedMotion.addEventListener('change', event => { if (event.matches) revealAll(); });
+addEventListener('pageshow', event => { if (event.persisted) revealAll(); });
+
+const brand = document.querySelector('.brand');
+let leafFrame = 0;
+let leafCleanup = 0;
+let leafBurst;
+function cancelLeaves() {
+  cancelAnimationFrame(leafFrame);
+  leafFrame = 0;
+  clearTimeout(leafCleanup);
+  leafBurst?.remove();
+  leafBurst = null;
+}
+function showLeaves() {
+  if (reducedMotion.matches || leafBurst) return;
+  const box = brand.getBoundingClientRect();
+  leafBurst = document.createElement('div');
+  leafBurst.className = 'leaf-burst';
+  leafBurst.setAttribute('aria-hidden', 'true');
+  leafBurst.style.left = `${box.left + box.width / 2}px`;
+  leafBurst.style.top = `${header.getBoundingClientRect().bottom + 8}px`;
+  for (let index = 0; index < 6; index++) {
+    const leaf = document.createElement('img');
+    leaf.src = 'assets/watercolor-leaf.webp';
+    leaf.alt = '';
+    leaf.style.setProperty('--leaf-x', `${index * 15 - 18}px`);
+    leaf.style.setProperty('--leaf-y', `${38 + (index % 3) * 14}px`);
+    leaf.style.setProperty('--leaf-angle', `${index * 41 - 65}deg`);
+    leafBurst.append(leaf);
+  }
+  document.body.append(leafBurst);
+  leafCleanup = setTimeout(cancelLeaves, 900);
+}
+brand.addEventListener('click', event => {
+  if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || reducedMotion.matches) return;
+  setMenu(false);
+  if (leafFrame || leafBurst) return;
+  const start = performance.now();
+  function awaitTop() {
+    leafFrame = 0;
+    if (scrollY <= 2) { showLeaves(); return; }
+    if (performance.now() - start < 2000) leafFrame = requestAnimationFrame(awaitTop);
+  }
+  leafFrame = requestAnimationFrame(awaitTop);
+});
+addEventListener('wheel', cancelLeaves, { passive: true });
+addEventListener('touchstart', cancelLeaves, { passive: true });
+document.addEventListener('keydown', event => {
+  if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'End', 'Home', ' '].includes(event.key)) cancelLeaves();
+});
+reducedMotion.addEventListener('change', event => { if (event.matches) cancelLeaves(); });
 
 const countdown = document.querySelector('#countdown');
 const deadlineCurrent = document.querySelector('#rsvpDeadlineCurrent');

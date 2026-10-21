@@ -23,11 +23,54 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+    <link rel="preload" href="assets/allura-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="styles.css?v=4" />
-    <script src="script.js?v=5" defer></script>
+    <script>
+      (() => {
+        const root = document.documentElement;
+        let timeout;
+        function finish() {
+          const intro = document.querySelector('.invitation-intro');
+          const restoreFocus = intro?.contains(document.activeElement);
+          root.classList.remove('intro-pending', 'intro-opening');
+          clearTimeout(timeout);
+          document.querySelectorAll('[data-intro-inert]').forEach(element => {
+            element.inert = false;
+            element.removeAttribute('data-intro-inert');
+          });
+          if (restoreFocus) document.querySelector('.brand')?.focus({ preventScroll: true });
+        }
+        window.weddingIntro = { finish };
+        try {
+          const back = performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
+          if (location.hash || back || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          if (localStorage.getItem('jd-intro-seen-v1')) return;
+          localStorage.setItem('jd-intro-seen-v1', '1');
+          root.classList.add('intro-pending');
+          timeout = setTimeout(finish, 2000);
+        } catch { finish(); }
+        addEventListener('pageshow', event => { if (event.persisted) finish(); });
+      })();
+    </script>
+    <link rel="stylesheet" href="styles.css?v=6" />
+    <script src="script.js?v=6" defer></script>
   </head>
   <body>
+    <div class="invitation-intro" aria-label="Julia und Daniel – unsere Einladung">
+      <div class="intro-half intro-half--left" aria-hidden="true">
+        <div class="intro-card">
+          <img src="assets/watercolor-invitation.webp" alt="" width="720" height="1051" />
+          <div class="intro-card__type"><p>Julia &amp; Daniel</p><span>Wir heiraten!</span><time datetime="2027-05-01">1. Mai 2027</time></div>
+        </div>
+      </div>
+      <div class="intro-half intro-half--right" aria-hidden="true">
+        <div class="intro-card">
+          <img src="assets/watercolor-invitation.webp" alt="" width="720" height="1051" />
+          <div class="intro-card__type"><p>Julia &amp; Daniel</p><span>Wir heiraten!</span><time datetime="2027-05-01">1. Mai 2027</time></div>
+        </div>
+      </div>
+      <button type="button" class="intro-skip">Überspringen</button>
+    </div>
     <header class="site-header" aria-label="Seitennavigation">
       <a class="brand" href="#top" aria-label="Julia und Daniel – zum Anfang"><span>J&amp;D</span></a>
       <button class="menu-toggle icon-button" type="button" aria-label="Menü öffnen" aria-controls="navigation" aria-expanded="false" hidden>
@@ -64,6 +107,7 @@
       <section class="intro section">
         <div class="section__inner intro__grid">
           <div>
+            <img class="watercolor-accent" src="assets/watercolor-brush.webp" width="480" height="92" alt="" aria-hidden="true" loading="lazy" />
             <p class="eyebrow">Einladung</p>
             <h2>Wir feiern!</h2>
           </div>
@@ -290,6 +334,7 @@
     </main>
 
     <footer class="footer">
+      <img class="watercolor-accent watercolor-accent--footer" src="assets/watercolor-brush.webp" width="480" height="92" alt="" aria-hidden="true" loading="lazy" />
       <p>Julia & Daniel · 1. Mai 2027 · Gut Sonnenhausen</p>
       <a href="#top">Nach oben</a>
     </footer>

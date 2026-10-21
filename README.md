@@ -6,7 +6,7 @@ Statische One-Page-Hochzeitswebsite für GitHub Pages, Netlify oder jeden andere
 
 - `index.html` - Inhalt und Struktur der Website
 - `styles.css` - Gestaltung und responsive Layout
-- `script.js` - WhatsApp-Rückmeldung
+- `script.js` - WhatsApp-Rückmeldung und dezente Bewegungen
 - `assets/hero-kuss.jpg` - Hero-Bild
 - `assets/wiese.jpg` - visuelle Zäsur weiter unten
 - `assets/hochzeit-julia-daniel.ics` - Kalendereintrag zum Herunterladen
@@ -18,7 +18,13 @@ Live: https://d-gruenberg.github.io/hochzeit-julia-daniel/
 
 GitHub Pages liefert den Hauptordner von `main` aus. HTML, CSS, JavaScript und benötigte Dateien aus `assets/` gemeinsam aktualisieren. `tools/`, `.qa/`, `sources/` und das Aquarell gehören nicht zum öffentlichen Website-Paket.
 
-Schriften (Inter und Newsreader), Lucide-Symbole und responsive WebP-Bilder werden lokal ausgeliefert. Die zugehörigen Lizenzen liegen in `assets/`.
+Schriften (Inter, Newsreader und Allura), Lucide-Symbole und responsive WebP-Bilder werden lokal ausgeliefert. Die zugehörigen Lizenzen liegen in `assets/`.
+
+## Aquarell und Bewegung
+
+Beim ersten Besuch öffnet sich Julias Aquarell zum Kussfoto. Der lokale Merker `jd-intro-seen-v1` speichert nur, dass der Einstieg bereits gezeigt wurde. Abschnittslinks, Zurück-Navigation, gesperrter Speicher und die Geräteeinstellung für reduzierte Bewegung überspringen ihn. Der Einstieg lässt sich per Schaltfläche oder Escape beenden; eine unabhängige Zeitbegrenzung gibt die Seite spätestens nach zwei Sekunden frei.
+
+Zwei kleine Aquarellakzente verbinden Begrüßung und Footer mit der Einladung. Ein Klick auf J&D führt wie bisher nach oben und lässt dort einmal kurz sechs gemalte Blätter erscheinen. Bei reduzierter Bewegung entfallen auch Einblendungen und Parallax. Die optimierten Aquarellausschnitte liegen in `assets/watercolor-*.webp`; das Originalfoto bleibt lokal.
 
 ## Rückmeldung
 
