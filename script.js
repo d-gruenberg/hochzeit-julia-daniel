@@ -8,28 +8,80 @@ const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 menuButton.hidden = false;
 
 if (document.documentElement.classList.contains('intro-pending')) {
-  const finishIntro = window.weddingIntro.finish;
+  const controller = window.weddingIntro;
+  const finishIntro = controller.finish;
   const intro = document.querySelector('.invitation-intro');
+  const openButton = intro.querySelector('.intro-open');
+  const scrollbarProbe = document.createElement('div');
+  Object.assign(scrollbarProbe.style, { position: 'absolute', top: '-9999px', width: '100px', height: '100px', overflow: 'scroll' });
+  scrollbarProbe.setAttribute('aria-hidden', 'true');
+  document.body.append(scrollbarProbe);
+  document.documentElement.style.setProperty('--intro-scrollbar', `${scrollbarProbe.offsetWidth - scrollbarProbe.clientWidth}px`);
+  scrollbarProbe.remove();
+  let opening = false;
+  function openInvitation() {
+    if (opening || !document.documentElement.classList.contains('intro-pending')) return;
+    opening = true;
+    controller.remember();
+    controller.guard();
+    const photo = intro.querySelector('.intro-photo');
+    const heroImage = document.querySelector('.hero__image');
+    const origin = photo.getBoundingClientRect();
+    const target = heroImage.getBoundingClientRect();
+    const flight = document.createElement('img');
+    flight.className = 'intro-flight';
+    flight.src = heroImage.currentSrc || heroImage.src;
+    flight.alt = '';
+    flight.setAttribute('aria-hidden', 'true');
+    const from = {
+      left: `${origin.left}px`, top: `${origin.top}px`,
+      width: `${origin.width}px`, height: `${origin.height}px`,
+      borderRadius: getComputedStyle(photo).borderRadius,
+      objectPosition: getComputedStyle(photo.querySelector('img')).objectPosition,
+    };
+    const to = {
+      left: `${target.left}px`, top: `${target.top}px`,
+      width: `${target.width}px`, height: `${target.height}px`,
+      borderRadius: '0px', objectPosition: getComputedStyle(heroImage).objectPosition,
+    };
+    Object.assign(flight.style, from);
+    document.body.append(flight);
+    document.documentElement.classList.add('intro-opening');
+    if (typeof flight.animate === 'function') {
+      flight.animate([
+        { ...from, opacity: 1, offset: 0 },
+        { ...to, opacity: 1, offset: .82 },
+        { ...to, opacity: 0, offset: 1 },
+      ], { duration: 900, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'forwards' })
+        .finished.then(finishIntro).catch(finishIntro);
+    } else {
+      flight.remove();
+      setTimeout(finishIntro, 900);
+    }
+  }
+  openButton.addEventListener('click', openInvitation);
+  intro.addEventListener('keydown', event => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      intro.classList.add('intro-keyboard');
+      openButton.focus({ preventScroll: true });
+    }
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && document.documentElement.classList.contains('intro-pending')) {
+      controller.remember();
+      finishIntro();
+    }
+  });
+  addEventListener('hashchange', finishIntro);
+  reducedMotion.addEventListener('change', event => { if (event.matches) finishIntro(); });
   document.querySelectorAll('.site-header, main, .footer').forEach(element => {
     element.inert = true;
     element.setAttribute('data-intro-inert', '');
   });
-  const skip = intro.querySelector('.intro-skip');
-  skip.addEventListener('click', finishIntro);
-  skip.focus({ preventScroll: true });
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') finishIntro();
-  });
-  addEventListener('hashchange', finishIntro);
-  reducedMotion.addEventListener('change', event => { if (event.matches) finishIntro(); });
-  Promise.all([
-    intro.querySelector('img').decode(),
-    document.fonts.load('42px Allura'),
-  ]).then(() => {
-    if (!document.documentElement.classList.contains('intro-pending')) return;
-    document.documentElement.classList.add('intro-opening');
-    setTimeout(finishIntro, 1200);
-  }).catch(finishIntro);
+  openButton.focus({ preventScroll: true });
+  controller.ready();
+  intro.querySelectorAll('img').forEach(image => { image.decode().catch(finishIntro); });
 }
 
 function setMenu(open, restoreFocus = false) {
@@ -81,7 +133,7 @@ addEventListener('resize', queueMeadow);
 reducedMotion.addEventListener('change', queueMeadow);
 updateMeadow();
 
-const revealTargets = [...document.querySelectorAll('.section__heading, .intro h2, .image-break picture, .timeline li')];
+const revealTargets = [...document.querySelectorAll('.section__heading, .intro h2, .intro__copy > p:first-child, #uebernachten .content-stack > p:first-child, .timeline li')];
 let revealObserver;
 function revealAll() {
   revealObserver?.disconnect();
@@ -94,14 +146,23 @@ if (!reducedMotion.matches && 'IntersectionObserver' in window) {
       entry.target.classList.remove('reveal-pending');
       revealObserver.unobserve(entry.target);
     });
-  }, { threshold: .12, rootMargin: '0px 0px -24px 0px' });
+  }, { threshold: .08, rootMargin: '0px 0px -4% 0px' });
+  const pendingReveals = [];
   revealTargets.forEach(element => {
     const box = element.getBoundingClientRect();
     if (box.top < innerHeight && box.bottom > 0) return;
     if (element.matches('.timeline li')) {
-      element.style.setProperty('--reveal-delay', `${[...element.parentElement.children].indexOf(element) * 70}ms`);
+      element.style.setProperty('--reveal-delay', `${[...element.parentElement.children].indexOf(element) * 60}ms`);
+    } else if (element.matches('p')) {
+      element.style.setProperty('--reveal-delay', '90ms');
     }
-    element.classList.add('reveal-ready', 'reveal-pending');
+    element.classList.add('reveal-pending');
+    pendingReveals.push(element);
+  });
+  // Commit starting positions once before enabling the entrance transitions.
+  if (pendingReveals.length) pendingReveals[0].getBoundingClientRect();
+  pendingReveals.forEach(element => {
+    element.classList.add('reveal-ready');
     revealObserver.observe(element);
   });
 }

@@ -22,9 +22,9 @@ Schriften (Inter, Newsreader und Allura), Lucide-Symbole und responsive WebP-Bil
 
 ## Aquarell und Bewegung
 
-Beim ersten Besuch öffnet sich Julias Aquarell zum Kussfoto. Der lokale Merker `jd-intro-seen-v1` speichert nur, dass der Einstieg bereits gezeigt wurde. Abschnittslinks, Zurück-Navigation, gesperrter Speicher und die Geräteeinstellung für reduzierte Bewegung überspringen ihn. Der Einstieg lässt sich per Schaltfläche oder Escape beenden; eine unabhängige Zeitbegrenzung gibt die Seite spätestens nach zwei Sekunden frei.
+Beim ersten Besuch verbindet ein Aquarellbogen Julias Bild mit dem Kussfoto. Die ganze Einstiegsfläche lässt sich per Klick, Antippen oder Enter öffnen; bis dahin bleibt das Motiv stehen. Escape führt ebenfalls direkt zur Website. Erst beim bewussten Öffnen oder Schließen speichert der lokale Merker `jd-intro-seen-v2`, dass die Einladung geöffnet wurde. Der frühere Merker wird entfernt. Abschnittslinks, Zurück-Navigation, gesperrter Speicher und die Geräteeinstellung für reduzierte Bewegung überspringen den Einstieg. Eine unabhängige Zeitbegrenzung greift nur bei fehlgeschlagener Initialisierung oder einer hängenden Öffnungsanimation, nicht während des Betrachtens.
 
-Zwei kleine Aquarellakzente verbinden Begrüßung und Footer mit der Einladung. Ein Klick auf J&D führt wie bisher nach oben und lässt dort einmal kurz sechs gemalte Blätter erscheinen. Bei reduzierter Bewegung entfallen auch Einblendungen und Parallax. Die optimierten Aquarellausschnitte liegen in `assets/watercolor-*.webp`; das Originalfoto bleibt lokal.
+Zwei kleine Aquarellakzente verbinden Begrüßung und Footer mit der Einladung. Ausgewählte Überschriften, Einleitungstexte und Ablaufstationen steigen beim ersten Erreichen sanft um 24 Pixel auf. Fotos, Formular und wichtige Hinweise bleiben ohne Einblendung sichtbar. Ein Klick auf J&D führt wie bisher nach oben und lässt dort einmal kurz sechs gemalte Blätter erscheinen. Bei reduzierter Bewegung entfallen auch Aufwärtsbewegungen und Parallax. Die optimierten Aquarellausschnitte liegen in `assets/watercolor-*.webp`; das Originalfoto bleibt lokal.
 
 ## Rückmeldung
 

@@ -34,42 +34,48 @@
           const restoreFocus = intro?.contains(document.activeElement);
           root.classList.remove('intro-pending', 'intro-opening');
           clearTimeout(timeout);
+          document.querySelectorAll('.intro-flight').forEach(element => element.remove());
           document.querySelectorAll('[data-intro-inert]').forEach(element => {
             element.inert = false;
             element.removeAttribute('data-intro-inert');
           });
           if (restoreFocus) document.querySelector('.brand')?.focus({ preventScroll: true });
         }
-        window.weddingIntro = { finish };
+        window.weddingIntro = {
+          finish,
+          ready() { clearTimeout(timeout); },
+          guard() { clearTimeout(timeout); timeout = setTimeout(finish, 1400); },
+          remember() { try { localStorage.setItem('jd-intro-seen-v2', '1'); } catch {} },
+        };
         try {
           const back = performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
           if (location.hash || back || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-          if (localStorage.getItem('jd-intro-seen-v1')) return;
-          localStorage.setItem('jd-intro-seen-v1', '1');
+          if (localStorage.getItem('jd-intro-seen-v2') === '1') return;
+          localStorage.setItem('jd-intro-seen-v2', '0');
+          localStorage.removeItem('jd-intro-seen-v2');
+          localStorage.removeItem('jd-intro-seen-v1');
           root.classList.add('intro-pending');
-          timeout = setTimeout(finish, 2000);
+          timeout = setTimeout(finish, 3000);
         } catch { finish(); }
         addEventListener('pageshow', event => { if (event.persisted) finish(); });
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=6" />
-    <script src="script.js?v=6" defer></script>
+    <link rel="stylesheet" href="styles.css?v=7" />
+    <script src="script.js?v=7" defer></script>
   </head>
   <body>
-    <div class="invitation-intro" aria-label="Julia und Daniel – unsere Einladung">
-      <div class="intro-half intro-half--left" aria-hidden="true">
-        <div class="intro-card">
-          <img src="assets/watercolor-invitation.webp" alt="" width="720" height="1051" />
-          <div class="intro-card__type"><p>Julia &amp; Daniel</p><span>Wir heiraten!</span><time datetime="2027-05-01">1. Mai 2027</time></div>
-        </div>
-      </div>
-      <div class="intro-half intro-half--right" aria-hidden="true">
-        <div class="intro-card">
-          <img src="assets/watercolor-invitation.webp" alt="" width="720" height="1051" />
-          <div class="intro-card__type"><p>Julia &amp; Daniel</p><span>Wir heiraten!</span><time datetime="2027-05-01">1. Mai 2027</time></div>
-        </div>
-      </div>
-      <button type="button" class="intro-skip">Überspringen</button>
+    <div class="invitation-intro" role="dialog" aria-modal="true" aria-label="Julia und Daniel – unsere Einladung">
+      <button type="button" class="intro-open" aria-label="Einladung öffnen – Julia und Daniel, 1. Mai 2027">
+        <span class="intro-content" aria-hidden="true">
+          <span class="intro-collage">
+            <img class="intro-paint" src="assets/watercolor-arch.webp" alt="" width="720" height="762" />
+            <span class="intro-photo"><img src="assets/hero-960.webp" alt="" width="960" height="640" /></span>
+          </span>
+          <span class="intro-names">Julia &amp; Daniel</span>
+          <span class="intro-date">1. Mai 2027 · Gut Sonnenhausen</span>
+          <span class="intro-instruction"><span class="hint-touch">Zum Öffnen tippen</span><span class="hint-pointer">Zum Öffnen klicken</span></span>
+        </span>
+      </button>
     </div>
     <header class="site-header" aria-label="Seitennavigation">
       <a class="brand" href="#top" aria-label="Julia und Daniel – zum Anfang"><span>J&amp;D</span></a>
