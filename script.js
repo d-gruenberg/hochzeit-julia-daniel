@@ -5,6 +5,31 @@ const menuButton = document.querySelector('.menu-toggle');
 const nav = document.querySelector('#navigation');
 const mobile = matchMedia('(max-width: 767px)');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const emojiAnimations = new Set();
+document.querySelectorAll('.emoji-bubble').forEach(button => {
+  if (typeof button.animate !== 'function') return;
+  button.disabled = false;
+  let animation = null;
+  button.addEventListener('click', () => {
+    if (reducedMotion.matches || animation) return;
+    animation = button.animate([
+      { transform: 'scale(1)' },
+      { transform: 'scale(1.15)', offset: .45 },
+      { transform: 'scale(1)' }
+    ], { duration: 400, easing: 'ease-in-out' });
+    const current = animation;
+    emojiAnimations.add(current);
+    const cleanup = () => {
+      emojiAnimations.delete(current);
+      if (animation === current) animation = null;
+    };
+    current.addEventListener('finish', cleanup, { once: true });
+    current.addEventListener('cancel', cleanup, { once: true });
+  });
+});
+reducedMotion.addEventListener('change', event => {
+  if (event.matches) emojiAnimations.forEach(animation => animation.cancel());
+});
 menuButton.hidden = false;
 
 if (document.documentElement.classList.contains('intro-pending')) {
