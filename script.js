@@ -29,7 +29,11 @@ document.querySelectorAll('.emoji-bubble').forEach(button => {
     observer?.disconnect();
     button.classList.remove('emoji-pending');
     if (animate && !reducedMotion.matches) {
-      play([{ transform: 'scale(0)' }, { transform: 'scale(1)' }], 350, 'cubic-bezier(.22, 1, .36, 1)');
+      play([
+        { transform: 'scale(0)', easing: 'ease-out' },
+        { transform: 'scale(1.2)', offset: .75, easing: 'ease-out' },
+        { transform: 'scale(1)' }
+      ], 1000, 'linear');
     }
   }
   if (!reducedMotion.matches && 'IntersectionObserver' in window) {
@@ -41,8 +45,8 @@ document.querySelectorAll('.emoji-bubble').forEach(button => {
     pending = true;
     button.classList.add('emoji-pending');
     observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting)) reveal(true);
-    }, { threshold: .15 });
+      if (entries.some(entry => entry.isIntersecting && entry.intersectionRatio >= 1)) reveal(true);
+    }, { threshold: 1, rootMargin: '0px 0px -48px 0px' });
     observer.observe(slot);
   }
   button.addEventListener('focus', () => reveal());
@@ -53,7 +57,7 @@ document.querySelectorAll('.emoji-bubble').forEach(button => {
     if (reducedMotion.matches || animation) return;
     play([
       { transform: 'scale(1)' },
-      { transform: 'scale(1.15)', offset: .45 },
+      { transform: 'scale(1.2)', offset: .45 },
       { transform: 'scale(1)' }
     ], 400);
   });
