@@ -116,6 +116,8 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; }
 .emoji-bubble { position: relative; display: inline-grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; padding: 0; border: 1px solid var(--line); border-radius: 14px 14px 14px 4px; background: #fffdf9; color: var(--ink); cursor: pointer; transform-origin: 25% 80%; }
 .emoji-bubble span { font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif; font-size: 22px; font-weight: 400; line-height: 1; }
 .emoji-bubble:disabled { cursor: default; opacity: 1; }
+.emoji-slot { display: inline-flex; flex: 0 0 44px; width: 44px; height: 44px; }
+.emoji-bubble.emoji-pending { transform: scale(0); }
 .witnesses small { color: var(--muted); font-size: .875rem; }
 .witnesses a { display: flex; align-items: center; min-height: 44px; font-size: .9375rem; color: var(--green-dark); }
 .rsvp { background: #e7eff2; }
@@ -195,6 +197,7 @@ input[type='radio'] { width: 20px; height: 20px; margin: 0; accent-color: var(--
 @media (max-height: 500px) and (orientation: landscape) { .hero__content { padding: 10rem 0 1.5rem; } .hero h1 { font-size: 3rem; } .hero__image { object-position: center 40%; } }
 @media (max-height: 500px) { .intro-content { padding-block: 16px; } .intro-collage { width: min(50vw, calc(44svh * .945)); } .intro-names { margin-top: 8px; font-size: 2.1rem; } .intro-date { font-size: .75rem; } .intro-instruction { margin-top: 10px; font-size: .8125rem; } }
 @media (prefers-reduced-motion: reduce) {
+  .emoji-bubble.emoji-pending { transform: none; }
   html { scroll-behavior: auto; }
   .invitation-intro, .intro-pending .invitation-intro, .intro-flight, .leaf-burst { display: none; }
   .reveal-pending { opacity: 1; transform: none; }

@@ -10,13 +10,8 @@ document.querySelectorAll('.emoji-bubble').forEach(button => {
   if (typeof button.animate !== 'function') return;
   button.disabled = false;
   let animation = null;
-  button.addEventListener('click', () => {
-    if (reducedMotion.matches || animation) return;
-    animation = button.animate([
-      { transform: 'scale(1)' },
-      { transform: 'scale(1.15)', offset: .45 },
-      { transform: 'scale(1)' }
-    ], { duration: 400, easing: 'ease-in-out' });
+  function play(keyframes, duration, easing = 'ease-in-out') {
+    animation = button.animate(keyframes, { duration, easing });
     const current = animation;
     emojiAnimations.add(current);
     const cleanup = () => {
@@ -25,6 +20,42 @@ document.querySelectorAll('.emoji-bubble').forEach(button => {
     };
     current.addEventListener('finish', cleanup, { once: true });
     current.addEventListener('cancel', cleanup, { once: true });
+  }
+  let observer = null;
+  let pending = false;
+  function reveal(animate = false) {
+    if (!pending) return;
+    pending = false;
+    observer?.disconnect();
+    button.classList.remove('emoji-pending');
+    if (animate && !reducedMotion.matches) {
+      play([{ transform: 'scale(0)' }, { transform: 'scale(1)' }], 350, 'cubic-bezier(.22, 1, .36, 1)');
+    }
+  }
+  if (!reducedMotion.matches && 'IntersectionObserver' in window) {
+    // Observe an unscaled slot so a zero-sized bubble can still enter the viewport.
+    const slot = document.createElement('span');
+    slot.className = 'emoji-slot';
+    button.replaceWith(slot);
+    slot.append(button);
+    pending = true;
+    button.classList.add('emoji-pending');
+    observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) reveal(true);
+    }, { threshold: .15 });
+    observer.observe(slot);
+  }
+  button.addEventListener('focus', () => reveal());
+  reducedMotion.addEventListener('change', event => { if (event.matches) reveal(); });
+  window.addEventListener('pageshow', event => { if (event.persisted) reveal(); });
+  button.addEventListener('click', () => {
+    reveal();
+    if (reducedMotion.matches || animation) return;
+    play([
+      { transform: 'scale(1)' },
+      { transform: 'scale(1.15)', offset: .45 },
+      { transform: 'scale(1)' }
+    ], 400);
   });
 });
 reducedMotion.addEventListener('change', event => {
