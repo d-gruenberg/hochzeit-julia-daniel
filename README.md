@@ -18,13 +18,13 @@ Live: https://d-gruenberg.github.io/hochzeit-julia-daniel/
 
 GitHub Pages liefert den Hauptordner von `main` aus. HTML, CSS, JavaScript und benötigte Dateien aus `assets/` gemeinsam aktualisieren. `tools/`, `.qa/`, `sources/` und das Aquarell gehören nicht zum öffentlichen Website-Paket.
 
-Schriften (Inter, Newsreader und Allura), Lucide-Symbole und responsive WebP-Bilder werden lokal ausgeliefert. Die zugehörigen Lizenzen liegen in `assets/`.
+Schriften (Inter und Newsreader), Lucide-Symbole und responsive WebP-Bilder werden lokal ausgeliefert. Die zugehörigen Lizenzen liegen in `assets/`.
 
 ## Aquarell und Bewegung
 
 Beim ersten Besuch verbindet ein Aquarellbogen Julias Bild mit dem Kussfoto. Die ganze Einstiegsfläche lässt sich per Klick, Antippen oder Enter öffnen; bis dahin bleibt das Motiv stehen. Escape führt ebenfalls direkt zur Website. Erst beim bewussten Öffnen oder Schließen speichert der lokale Merker `jd-intro-seen-v2`, dass die Einladung geöffnet wurde. Der frühere Merker wird entfernt. Abschnittslinks, Zurück-Navigation, gesperrter Speicher und die Geräteeinstellung für reduzierte Bewegung überspringen den Einstieg. Eine unabhängige Zeitbegrenzung greift nur bei fehlgeschlagener Initialisierung oder einer hängenden Öffnungsanimation, nicht während des Betrachtens.
 
-Zwei kleine Aquarellakzente verbinden Begrüßung und Footer mit der Einladung. Ausgewählte Überschriften, Einleitungstexte und Ablaufstationen steigen beim ersten Erreichen sanft um 24 Pixel auf. Fotos, Formular und wichtige Hinweise bleiben ohne Einblendung sichtbar. Ein Klick auf J&D führt wie bisher nach oben und lässt dort einmal kurz sechs gemalte Blätter erscheinen. Bei reduzierter Bewegung entfallen auch Aufwärtsbewegungen und Parallax. Die optimierten Aquarellausschnitte liegen in `assets/watercolor-*.webp`; das Originalfoto bleibt lokal.
+Das Aquarell bleibt auf den Einstieg beschränkt. Ausgewählte Überschriften, Einleitungstexte und Ablaufstationen steigen beim ersten Erreichen sanft um 24 Pixel auf. Fotos, Formular und wichtige Hinweise bleiben ohne Einblendung sichtbar. Ein Klick auf J&D führt nach oben und lässt dort einmal kurz sechs Herzen erscheinen. Bei reduzierter Bewegung entfallen auch Herzen, Aufwärtsbewegungen und Parallax. Der optimierte Aquarellausschnitt liegt in `assets/watercolor-arch.webp`; das Originalfoto bleibt lokal.
 
 ## Rückmeldung
 

@@ -5,66 +5,6 @@ const menuButton = document.querySelector('.menu-toggle');
 const nav = document.querySelector('#navigation');
 const mobile = matchMedia('(max-width: 767px)');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const emojiAnimations = new Set();
-document.querySelectorAll('.emoji-bubble').forEach(button => {
-  if (typeof button.animate !== 'function') return;
-  button.disabled = false;
-  let animation = null;
-  function play(keyframes, duration, easing = 'ease-in-out') {
-    animation = button.animate(keyframes, { duration, easing });
-    const current = animation;
-    emojiAnimations.add(current);
-    const cleanup = () => {
-      emojiAnimations.delete(current);
-      if (animation === current) animation = null;
-    };
-    current.addEventListener('finish', cleanup, { once: true });
-    current.addEventListener('cancel', cleanup, { once: true });
-  }
-  let observer = null;
-  let pending = false;
-  function reveal(animate = false) {
-    if (!pending) return;
-    pending = false;
-    observer?.disconnect();
-    button.classList.remove('emoji-pending');
-    if (animate && !reducedMotion.matches) {
-      play([
-        { transform: 'scale(0)', easing: 'ease-out' },
-        { transform: 'scale(1.2)', offset: .75, easing: 'ease-out' },
-        { transform: 'scale(1)' }
-      ], 1000, 'linear');
-    }
-  }
-  if (!reducedMotion.matches && 'IntersectionObserver' in window) {
-    // Observe an unscaled slot so a zero-sized bubble can still enter the viewport.
-    const slot = document.createElement('span');
-    slot.className = 'emoji-slot';
-    button.replaceWith(slot);
-    slot.append(button);
-    pending = true;
-    button.classList.add('emoji-pending');
-    observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting && entry.intersectionRatio >= 1)) reveal(true);
-    }, { threshold: 1, rootMargin: '0px 0px -48px 0px' });
-    observer.observe(slot);
-  }
-  button.addEventListener('focus', () => reveal());
-  reducedMotion.addEventListener('change', event => { if (event.matches) reveal(); });
-  window.addEventListener('pageshow', event => { if (event.persisted) reveal(); });
-  button.addEventListener('click', () => {
-    reveal();
-    if (reducedMotion.matches || animation) return;
-    play([
-      { transform: 'scale(1)' },
-      { transform: 'scale(1.2)', offset: .45 },
-      { transform: 'scale(1)' }
-    ], 400);
-  });
-});
-reducedMotion.addEventListener('change', event => {
-  if (event.matches) emojiAnimations.forEach(animation => animation.cancel());
-});
 menuButton.hidden = false;
 
 if (document.documentElement.classList.contains('intro-pending')) {
@@ -88,10 +28,14 @@ if (document.documentElement.classList.contains('intro-pending')) {
     const heroImage = document.querySelector('.hero__image');
     const origin = photo.getBoundingClientRect();
     const target = heroImage.getBoundingClientRect();
-    const flight = document.createElement('img');
+    const flight = document.createElement('div');
     flight.className = 'intro-flight';
-    flight.src = heroImage.currentSrc || heroImage.src;
-    flight.alt = '';
+    const flightImage = document.createElement('img');
+    flightImage.src = heroImage.currentSrc || heroImage.src;
+    flightImage.alt = '';
+    const flightShade = document.createElement('span');
+    flightShade.className = 'intro-flight-shade';
+    flight.append(flightImage, flightShade);
     flight.setAttribute('aria-hidden', 'true');
     const from = {
       left: `${origin.left}px`, top: `${origin.top}px`,
@@ -105,14 +49,19 @@ if (document.documentElement.classList.contains('intro-pending')) {
       borderRadius: '0px', objectPosition: getComputedStyle(heroImage).objectPosition,
     };
     Object.assign(flight.style, from);
+    flightImage.style.objectPosition = from.objectPosition;
     document.body.append(flight);
     document.documentElement.classList.add('intro-opening');
     if (typeof flight.animate === 'function') {
+      flightImage.animate([{ objectPosition: from.objectPosition }, { objectPosition: to.objectPosition }],
+        { duration: 738, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'forwards' });
+      flightShade.animate([{ opacity: 0 }, { opacity: 1 }],
+        { duration: 738, easing: 'ease-in-out', fill: 'forwards' });
       flight.animate([
-        { ...from, opacity: 1, offset: 0 },
-        { ...to, opacity: 1, offset: .82 },
+        { ...from, opacity: 1, offset: 0, easing: 'cubic-bezier(.22, 1, .36, 1)' },
+        { ...to, opacity: 1, offset: .82, easing: 'ease-in-out' },
         { ...to, opacity: 0, offset: 1 },
-      ], { duration: 900, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'forwards' })
+      ], { duration: 900, easing: 'linear', fill: 'forwards' })
         .finished.then(finishIntro).catch(finishIntro);
     } else {
       flight.remove();
@@ -230,54 +179,53 @@ reducedMotion.addEventListener('change', event => { if (event.matches) revealAll
 addEventListener('pageshow', event => { if (event.persisted) revealAll(); });
 
 const brand = document.querySelector('.brand');
-let leafFrame = 0;
-let leafCleanup = 0;
-let leafBurst;
-function cancelLeaves() {
-  cancelAnimationFrame(leafFrame);
-  leafFrame = 0;
-  clearTimeout(leafCleanup);
-  leafBurst?.remove();
-  leafBurst = null;
+let heartFrame = 0;
+let heartCleanup = 0;
+let heartBurst;
+function cancelHearts() {
+  cancelAnimationFrame(heartFrame);
+  heartFrame = 0;
+  clearTimeout(heartCleanup);
+  heartBurst?.remove();
+  heartBurst = null;
 }
-function showLeaves() {
-  if (reducedMotion.matches || leafBurst) return;
+function showHearts() {
+  if (reducedMotion.matches || heartBurst) return;
   const box = brand.getBoundingClientRect();
-  leafBurst = document.createElement('div');
-  leafBurst.className = 'leaf-burst';
-  leafBurst.setAttribute('aria-hidden', 'true');
-  leafBurst.style.left = `${box.left + box.width / 2}px`;
-  leafBurst.style.top = `${header.getBoundingClientRect().bottom + 8}px`;
+  heartBurst = document.createElement('div');
+  heartBurst.className = 'heart-burst';
+  heartBurst.setAttribute('aria-hidden', 'true');
+  heartBurst.style.left = `${box.left + box.width / 2}px`;
+  heartBurst.style.top = `${header.getBoundingClientRect().bottom + 8}px`;
   for (let index = 0; index < 6; index++) {
-    const leaf = document.createElement('img');
-    leaf.src = 'assets/watercolor-leaf.webp';
-    leaf.alt = '';
-    leaf.style.setProperty('--leaf-x', `${index * 15 - 18}px`);
-    leaf.style.setProperty('--leaf-y', `${38 + (index % 3) * 14}px`);
-    leaf.style.setProperty('--leaf-angle', `${index * 41 - 65}deg`);
-    leafBurst.append(leaf);
+    const heart = document.createElement('span');
+    heart.textContent = '♥️';
+    heart.style.setProperty('--heart-x', `${index * 15 - 18}px`);
+    heart.style.setProperty('--heart-y', `${38 + (index % 3) * 14}px`);
+    heart.style.setProperty('--heart-angle', `${index * 8 - 20}deg`);
+    heartBurst.append(heart);
   }
-  document.body.append(leafBurst);
-  leafCleanup = setTimeout(cancelLeaves, 900);
+  document.body.append(heartBurst);
+  heartCleanup = setTimeout(cancelHearts, 900);
 }
 brand.addEventListener('click', event => {
   if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || reducedMotion.matches) return;
   setMenu(false);
-  if (leafFrame || leafBurst) return;
+  if (heartFrame || heartBurst) return;
   const start = performance.now();
   function awaitTop() {
-    leafFrame = 0;
-    if (scrollY <= 2) { showLeaves(); return; }
-    if (performance.now() - start < 2000) leafFrame = requestAnimationFrame(awaitTop);
+    heartFrame = 0;
+    if (scrollY <= 2) { showHearts(); return; }
+    if (performance.now() - start < 2000) heartFrame = requestAnimationFrame(awaitTop);
   }
-  leafFrame = requestAnimationFrame(awaitTop);
+  heartFrame = requestAnimationFrame(awaitTop);
 });
-addEventListener('wheel', cancelLeaves, { passive: true });
-addEventListener('touchstart', cancelLeaves, { passive: true });
+addEventListener('wheel', cancelHearts, { passive: true });
+addEventListener('touchstart', cancelHearts, { passive: true });
 document.addEventListener('keydown', event => {
-  if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'End', 'Home', ' '].includes(event.key)) cancelLeaves();
+  if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'End', 'Home', ' '].includes(event.key)) cancelHearts();
 });
-reducedMotion.addEventListener('change', event => { if (event.matches) cancelLeaves(); });
+reducedMotion.addEventListener('change', event => { if (event.matches) cancelHearts(); });
 
 const countdown = document.querySelector('#countdown');
 const deadlineCurrent = document.querySelector('#rsvpDeadlineCurrent');
