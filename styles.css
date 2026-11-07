@@ -144,6 +144,7 @@ input[type='radio'] { width: 20px; height: 20px; margin: 0; accent-color: var(--
 @media (min-width: 1200px) { .site-header { padding-inline: 3rem; } }
 @media (max-width: 900px) {
   .intro__grid, .split, .rsvp__grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .split .section__heading { margin-bottom: 0; }
   .section { padding: 4rem 1.5rem; }
   .section h2 { font-size: 2.75rem; }
   .hero h1 { font-size: 4.25rem; }
